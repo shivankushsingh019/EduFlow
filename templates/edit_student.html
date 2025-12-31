@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Student - EduFlow{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-user-edit"></i> Edit Student</h1>
+    <div>
+        <a href="{{ url_for('students') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Students
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-user-edit"></i> Edit Student Information
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('edit_student', student_id=student.id) }}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user"></i> Full Name *
+                                </label>
+                                <input type="text" class="form-control" id="name" name="name" required 
+                                       value="{{ student.name }}" placeholder="Enter student's full name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope"></i> Email Address *
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email" required 
+                                       value="{{ student.email }}" placeholder="student@example.com">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">
+                                    <i class="fas fa-phone"></i> Phone Number *
+                                </label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required 
+                                       value="{{ student.phone }}" placeholder="+1234567890">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="course" class="form-label">
+                                    <i class="fas fa-book"></i> Course *
+                                </label>
+                                <select class="form-select" id="course" name="course" required>
+                                    <option value="">Select a course</option>
+                                    <option value="Computer Science" {% if student.course == 'Computer Science' %}selected{% endif %}>Computer Science</option>
+                                    <option value="Information Technology" {% if student.course == 'Information Technology' %}selected{% endif %}>Information Technology</option>
+                                    <option value="Business Administration" {% if student.course == 'Business Administration' %}selected{% endif %}>Business Administration</option>
+                                    <option value="Engineering" {% if student.course == 'Engineering' %}selected{% endif %}>Engineering</option>
+                                    <option value="Mathematics" {% if student.course == 'Mathematics' %}selected{% endif %}>Mathematics</option>
+                                    <option value="Physics" {% if student.course == 'Physics' %}selected{% endif %}>Physics</option>
+                                    <option value="Chemistry" {% if student.course == 'Chemistry' %}selected{% endif %}>Chemistry</option>
+                                    <option value="Biology" {% if student.course == 'Biology' %}selected{% endif %}>Biology</option>
+                                    <option value="English Literature" {% if student.course == 'English Literature' %}selected{% endif %}>English Literature</option>
+                                    <option value="Economics" {% if student.course == 'Economics' %}selected{% endif %}>Economics</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="status" class="form-label">
+                                    <i class="fas fa-toggle-on"></i> Status *
+                                </label>
+                                <select class="form-select" id="status" name="status" required>
+                                    <option value="active" {% if student.status == 'active' %}selected{% endif %}>Active</option>
+                                    <option value="inactive" {% if student.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                                    <option value="graduated" {% if student.status == 'graduated' %}selected{% endif %}>Graduated</option>
+                                    <option value="suspended" {% if student.status == 'suspended' %}selected{% endif %}>Suspended</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-calendar"></i> Enrollment Date
+                                </label>
+                                <input type="text" class="form-control" value="{{ student.enrollment_date }}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('students') }}" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-info-circle"></i> Student Details
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Student ID:</strong> #{{ student.id }}
+                </div>
+                <div class="mb-3">
+                    <strong>Current Status:</strong> 
+                    <span class="badge {% if student.status == 'active' %}bg-success{% elif student.status == 'graduated' %}bg-primary{% elif student.status == 'suspended' %}bg-warning{% else %}bg-secondary{% endif %}">
+                        {{ student.status }}
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <strong>Enrolled Since:</strong> {{ student.enrollment_date }}
+                </div>
+                
+                <hr>
+                
+                <h6><i class="fas fa-lightbulb text-warning"></i> Status Guide:</h6>
+                <ul class="small">
+                    <li><strong>Active:</strong> Currently enrolled and studying</li>
+                    <li><strong>Inactive:</strong> Not currently studying</li>
+                    <li><strong>Graduated:</strong> Completed the program</li>
+                    <li><strong>Suspended:</strong> Temporarily suspended</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
